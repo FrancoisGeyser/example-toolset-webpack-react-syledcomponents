@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -14,7 +15,7 @@ devtool: 'source-map',
 optimization: {
     splitChunks: {
         chunks: 'all',
-        name: true,
+        name: false,
     },
     runtimeChunk: true,
 },
@@ -27,7 +28,12 @@ devServer: {
     new HtmlWebpackPlugin({
         template:'./src/index.html'
     }),
-    new CleanWebpackPlugin(),
+      new CleanWebpackPlugin(),
+     new CopyPlugin({
+      patterns: [
+        { from: './src/assets', to: 'assets' },
+      ],
+    }),
 ],
 module: {
     rules: [
@@ -38,10 +44,20 @@ module: {
             loader: 'babel-loader',
         }
     },
+          {
+        test: /\.(jpg|png)$/,
+        use: {
+          loader: 'url-loader',
+        },
+      },
     {
         test: /\.(html)$/,
         use: ['html-loader']
-    }
+        },
+          {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ]
 }
 };
