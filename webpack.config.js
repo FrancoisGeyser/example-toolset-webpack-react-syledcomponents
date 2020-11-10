@@ -10,6 +10,14 @@ output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js'
 },
+devtool: 'source-map',
+optimization: {
+    splitChunks: {
+        chunks: 'all',
+        name: true,
+    },
+    runtimeChunk: true,
+},
 devServer: {
     // contentBase: path.join(__dirname, 'dist'),
     port: 9000,
@@ -21,22 +29,19 @@ devServer: {
     }),
     new CleanWebpackPlugin(),
 ],
-    module: {
-      rules: [
-      {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-              loader: 'babel-loader',
-              options: {
-                  presets: ['@babel/preset-env']
-              }
-          }
-      },
-      {
-          test: /\.(html)$/,
-          use: ['html-loader']
-      }
-      ]
+module: {
+    rules: [
+    {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+            loader: 'babel-loader',
+        }
+    },
+    {
+        test: /\.(html)$/,
+        use: ['html-loader']
     }
-  };
+    ]
+}
+};
